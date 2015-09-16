@@ -9,6 +9,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import httplike.cliente.Cliente;
+
 public class ClienteUI
 {
 	private static int ALTURA_JANELA = 540;
@@ -47,8 +49,11 @@ public class ClienteUI
 	
 	private void prepararCampos() {
 		campoSolicitacao = new JTextField(30);
+		campoSolicitacao.setToolTipText("Recurso");
 		campoHost = new JTextField(30);
+		campoHost.setToolTipText("Host");
 		campoPorta = new JTextField(30);
+		campoPorta.setToolTipText("Porta");
 		painelPrincipal.add(campoSolicitacao);
 		painelPrincipal.add(campoHost);
 		painelPrincipal.add(campoPorta);
@@ -63,11 +68,19 @@ public class ClienteUI
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				System.out.println(campoSolicitacao.getText());
-				
+				Cliente cliente = Cliente.getInstancia();
+				int porta = Integer.valueOf(campoPorta.getText());
+				String host = campoHost.getText();
+				String recurso = campoSolicitacao.getText();
+				cliente.solicitarRecurso(host, porta, recurso);			
 			}
 		});
 		painelPrincipal.add(botaoSolicitar);
+	}
+	
+	public static void main(String[] args) {
+
+		ClienteUI ui = new ClienteUI();
+		ui.montaTela();
 	}
 }

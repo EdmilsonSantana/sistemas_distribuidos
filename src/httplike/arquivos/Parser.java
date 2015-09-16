@@ -34,11 +34,7 @@ public class Parser {
 		return arquivo;
 	}
 	
-	public static void main(String[] args) throws IOException {
-		
-		
-		
-	}
+
 	
 	private void initialize() {
 		

@@ -21,6 +21,8 @@ public class Servidor {
 
 	private static Parser parser = new Parser();
 
+	private static Servidor servidor = null;
+	
 	private Servidor() {
 		try {
 			serverSocket = new ServerSocket(PORTA);
@@ -87,7 +89,10 @@ public class Servidor {
 
 	public static Servidor getInstancia() {
 
-		return new Servidor();
+		if ( servidor == null ) {
+			servidor = new Servidor();
+		}
+		return servidor;
 	}
 
 	public static void main(String[] args) {
