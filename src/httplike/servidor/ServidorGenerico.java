@@ -1,4 +1,4 @@
-package servidor;
+package httplike.servidor;
 import java.io.*;
 import java.net.*;
 public class ServidorGenerico

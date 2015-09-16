@@ -1,5 +1,5 @@
 
-package servidor;
+package httplike.servidor;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -11,7 +11,7 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import arquivos.Parser;
+import httplike.arquivos.Parser;
 
 public class Servidor {
 
@@ -30,7 +30,7 @@ public class Servidor {
 		accept();
 	}
 
-	public void accept() {
+	private void accept() {
 
 		try {
 			while(true) {

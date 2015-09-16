@@ -1,4 +1,4 @@
-package gui;
+package httplike.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

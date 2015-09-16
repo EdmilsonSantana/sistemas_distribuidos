@@ -1,4 +1,4 @@
-package arquivos;
+package httplike.arquivos;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import gui.ClienteUI;
-import servidor.Servidor;
+import httplike.gui.ClienteUI;
+import httplike.servidor.Servidor;
 
 public class Parser {
 
@@ -36,8 +36,7 @@ public class Parser {
 	
 	public static void main(String[] args) throws IOException {
 		
-		ClienteUI cliente = new ClienteUI();
-		cliente.montaTela();
+		
 		
 	}
 	

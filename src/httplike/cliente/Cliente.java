@@ -1,4 +1,4 @@
-package cliente;
+package httplike.cliente;
 
 import java.io.*;
 import java.net.*;
