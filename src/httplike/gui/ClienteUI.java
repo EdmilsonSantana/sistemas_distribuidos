@@ -2,11 +2,13 @@ package httplike.gui;
 
 import httplike.cliente.Cliente;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.management.RuntimeErrorException;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -86,6 +88,38 @@ public class ClienteUI {
 		}
 		estilo.removeAttributes(estilo.getAttributeNames());
 	}
+	public void novoTextoVermelho(String texto){
+		
+		StyleConstants.setForeground(this.estilo, Color.red);
+		try{
+			documentoEstilo.insertString(documentoEstilo.getLength(), texto, this.estilo);
+			
+		}catch(BadLocationException e){
+			throw new RuntimeException(e);
+		}
+		estilo.removeAttributes(estilo.getAttributeNames());
+	}
+	public void novoTextoAzul(String texto){
+		
+		StyleConstants.setForeground(this.estilo, Color.blue);
+		try{
+			documentoEstilo.insertString(documentoEstilo.getLength(), texto, this.estilo);
+		}catch(BadLocationException e){
+			throw new RuntimeException(e);
+		}
+		estilo.removeAttributes(estilo.getAttributeNames());
+	}
+	public void novoTextoSublinhado(String texto){
+		
+		StyleConstants.setUnderline(this.estilo,true);
+		try{
+			documentoEstilo.insertString(documentoEstilo.getLength(), texto, this.estilo);
+		}catch(BadLocationException e){
+			throw new RuntimeException(e);
+		}
+		estilo.removeAttributes(estilo.getAttributeNames());
+	}
+	
 
 	private void preparaJanela() {
 		janela = new JFrame("");
@@ -184,6 +218,12 @@ public class ClienteUI {
 				ui.novoTextoItalico(conteudo[0][i]);
 			} else if ( "negrito".equals(conteudo[1][i]) ) {
 				ui.novoTextoNegrito(conteudo[0][i]);
+			} else if( "vermelho".equals(conteudo[1][i])){
+				ui.novoTextoVermelho(conteudo[0][i]);
+			} else if( "azul".equals(conteudo[1][i])){
+				ui.novoTextoAzul(conteudo[0][i]);
+			} else if( "sublinhado".equals(conteudo[1][i])){
+				ui.novoTextoSublinhado(conteudo[0][i]);
 			} else {
 				novoTexto(conteudo[0][i]);
 			}

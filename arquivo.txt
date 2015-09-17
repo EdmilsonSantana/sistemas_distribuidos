@@ -1,3 +1,6 @@
 sddsds<italico>Edmilson</italico>
-<negrito>Douglas</negrito>
-<negrito>Laura</negrito>
+<negrito>Sport Clube do Recife</negrito>
+<vermelho>Ada Lovelace</vermelho>
+<negrito>Alan Turing</negrito>
+<azul>Stephen Hawking</azul>
+<sublinhado>Albert Einstein</sublinhado>

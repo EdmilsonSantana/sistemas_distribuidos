@@ -1,0 +1,6 @@
+sddsds<vermelho>Douglas Albuquerque</vermelho>
+<italico>Sócrates</italico>
+<negrito>Stephen Hawking</negrito>
+<italico>Alan Turing</italico>
+<sublinhado>Platão</sublinhado>
+<azul>Albert Einstein</azul>
