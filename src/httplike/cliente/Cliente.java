@@ -3,10 +3,22 @@ package httplike.cliente;
 import java.io.*;
 import java.net.*;
 
+import httplike.arquivos.Parser;
+import httplike.gui.ClienteUI;
+
 public class Cliente {
 	
-	private static Cliente cliente = null;
+	private static Parser parser = new Parser();
+	
+	private ClienteUI ui;
+	
+	public Cliente(ClienteUI ui) {
+		
+		this.ui = ui;
+		
+	}
 
+	
 	private Socket conectar(String host, int porta) {
 		Socket socket;
 		
@@ -38,18 +50,21 @@ public class Cliente {
 		 String recurso;
 		try {
 			recurso = in.readUTF();
-			 System.out.println(recurso);
+			apresentarRecurso(parser.parse(recurso));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
-		}
-		
-		 
+		} 
 	}
 	
-	public static Cliente getInstancia() {
-		if ( cliente == null ) {
-			cliente = new Cliente();
+	private void apresentarRecurso(String[][] conteudo) {
+		for( int i = 0; i < conteudo[1].length; i++ ) {
+			if( "italico".equals(conteudo[1][i])) {
+				ui.novoTextoItalico(conteudo[0][i]);
+			} else if ( "negrito".equals(conteudo[1][i]) ) {
+				ui.novoTextoNegrito(conteudo[0][i]);
+			}
 		}
-		return cliente;
 	}
+	
+	
 }
