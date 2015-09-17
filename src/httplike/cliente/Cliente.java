@@ -30,7 +30,7 @@ public class Cliente {
 		return socket;
 	}
 
-	public void solicitarRecurso(String host, int porta, String recurso) {
+	public void solicitarRecurso(String host, int porta, String pathRecurso) {
 		
 		Socket socket = conectar(host, porta);
 		DataInputStream in;
@@ -39,32 +39,23 @@ public class Cliente {
 			
 			in = new DataInputStream(socket.getInputStream());
 			out = new DataOutputStream(socket.getOutputStream());
-			out.writeUTF(recurso);
-			receberRecurso(in);
+			out.writeUTF(pathRecurso);
+			receberRecurso(in, pathRecurso);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
 	
-	private void receberRecurso(DataInputStream in) {
+	private void receberRecurso(DataInputStream in, String pathRecurso) {
 		 String recurso;
 		try {
 			recurso = in.readUTF();
-			apresentarRecurso(parser.parse(recurso));
+			ui.apresentarRecurso(parser.parse(recurso), pathRecurso);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		} 
 	}
 	
-	private void apresentarRecurso(String[][] conteudo) {
-		for( int i = 0; i < conteudo[1].length; i++ ) {
-			if( "italico".equals(conteudo[1][i])) {
-				ui.novoTextoItalico(conteudo[0][i]);
-			} else if ( "negrito".equals(conteudo[1][i]) ) {
-				ui.novoTextoNegrito(conteudo[0][i]);
-			}
-		}
-	}
 	
 	
 }
