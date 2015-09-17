@@ -3,11 +3,7 @@ package httplike.servidor;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -61,12 +57,11 @@ public class Servidor {
 				String recurso;
 				DataInputStream in = new DataInputStream(socket.getInputStream());
 				DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-				while (Boolean.TRUE) {
-					recurso = in.readUTF();
-					recurso = recurso.replaceAll("[^(\\x28-\\x7F)]", "").trim();
-					System.out.println(recurso);
-					buscarRecurso(recurso, out);
-				}
+				
+				recurso = in.readUTF();
+				recurso = recurso.replaceAll("[^(\\x28-\\x7F)]", "").trim();
+				buscarRecurso(recurso, out);
+				socket.close();
 
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -79,7 +74,6 @@ public class Servidor {
 			
 			try {
 				String arquivo = parser.lerArquivo(caminhoRecurso);
-				System.out.println(arquivo);
 				cliente.writeUTF(arquivo);
 			} catch (IOException e) {
 				e.printStackTrace();

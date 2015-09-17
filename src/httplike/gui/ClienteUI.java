@@ -1,14 +1,11 @@
 package httplike.gui;
 
-import httplike.cliente.Cliente;
-
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.management.RuntimeErrorException;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -21,6 +18,8 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+
+import httplike.cliente.Cliente;
 
 public class ClienteUI {
 	private static ClienteUI ui = null;
