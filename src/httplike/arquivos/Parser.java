@@ -31,7 +31,9 @@ public class Parser {
 		tags = tags.replaceAll("<", "-").trim();
 		String texto = recurso.replaceAll("<.*?>", "-");
 		texto = texto.replaceAll("--", "-");
+		System.out.println(texto);
 		tags = tags.replaceAll("--", "-");
+		System.out.println(tags);
 		conteudo[0] = texto.split(delimitador);
 		conteudo[1] = tags.split(delimitador);
 		return conteudo;

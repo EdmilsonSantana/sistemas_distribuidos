@@ -4,7 +4,7 @@
  * @author EdmilsonS
  */
 
-package sd.chat;
+package chat;
 
 import java.io.*;
 import java.net.*;
