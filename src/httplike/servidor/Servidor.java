@@ -74,6 +74,7 @@ public class Servidor {
 			
 			try {
 				String arquivo = parser.lerArquivo(caminhoRecurso);
+				arquivo = parser.criptografa(arquivo, Parser.CHAVE_CRIPTOGRAFIA);
 				cliente.writeUTF(arquivo);
 			} catch (IOException e) {
 				e.printStackTrace();

@@ -50,6 +50,7 @@ public class Cliente {
 		 String recurso;
 		try {
 			recurso = in.readUTF();
+			recurso = parser.descriptografa(recurso, Parser.CHAVE_CRIPTOGRAFIA);
 			ui.apresentarRecurso(parser.parse(recurso), pathRecurso);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
