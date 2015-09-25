@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Parser {
 
@@ -24,6 +26,23 @@ public class Parser {
 		}
 		br.close();
 		return arquivo;
+	}
+	public List<String> lerArquivoPorLinha(String path) throws IOException {
+		FileInputStream stream = new FileInputStream(path);
+		InputStreamReader reader = new InputStreamReader(stream);
+		BufferedReader br = new BufferedReader(reader);
+		String linha = br.readLine();
+		
+		ArrayList<String> linhas = new ArrayList<String>();
+		while (linha != null) {
+			linha = br.readLine();	
+			if (linha == null) {
+				break;
+			}
+			linhas.add(linha);
+		}
+		br.close();
+		return linhas;
 	}
 
 	public String[][] parse(String recurso) {
