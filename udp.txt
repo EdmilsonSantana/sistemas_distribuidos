@@ -1,19 +1,16 @@
-1:Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-2:Nam at ipsum vitae orci consectetur dictum in non arcu.
-3:Donec varius ipsum quis magna lacinia facilisis.
-4:Pellentesque condimentum justo in metus ultrices, eget luctus magna vulputate.
-5:Nulla vulputate dui vitae hendrerit scelerisque.
-6:Curabitur rhoncus nunc et mauris consectetur, quis tincidunt metus bibendum.
-7:Maecenas id massa ut leo laoreet volutpat.
-8:Sed varius neque vel erat dapibus faucibus.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Nam at ipsum vitae orci consectetur dictum in non arcu.
+Donec varius ipsum quis magna lacinia facilisis.
+Pellentesque condimentum justo in metus ultrices, eget luctus magna vulputate.
+Nulla vulputate dui vitae hendrerit scelerisque.
+Curabitur rhoncus nunc et mauris consectetur, quis tincidunt metus bibendum.
+Maecenas id massa ut leo laoreet volutpat.
+Sed varius neque vel erat dapibus faucibus.
 Aliquam interdum ante nec viverra convallis.
-
 Mauris a risus ac nunc rhoncus tristique eu non arcu.
 Aenean a tellus accumsan, ultrices nibh sit amet, dapibus nulla.
 Sed faucibus dui sed diam faucibus venenatis.
-
-    Pellentesque sit amet tortor at tortor maximus pharetra vitae sed libero.
-    Mauris nec felis a diam sagittis vestibulum eu fringilla sapien.
-
-    Sed laoreet sem in viverra iaculis.
-    Praesent imperdiet lorem eu placerat fringilla.
+Pellentesque sit amet tortor at tortor maximus pharetra vitae sed libero.
+Mauris nec felis a diam sagittis vestibulum eu fringilla sapien.
+Sed laoreet sem in viverra iaculis.
+Praesent imperdiet lorem eu placerat fringilla.

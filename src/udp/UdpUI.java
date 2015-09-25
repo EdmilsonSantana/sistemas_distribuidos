@@ -82,6 +82,7 @@ public class UdpUI {
 
 		campoSolicitacao = new JTextField(15);
 		campoSolicitacao.setToolTipText("Recurso");
+		campoSolicitacao.setText("udp.txt");
 		campoHost = new JTextField(15);
 		campoHost.setToolTipText("Host");
 		campoPorta = new JTextField(15);
@@ -107,7 +108,7 @@ public class UdpUI {
 		String recurso = campoSolicitacao.getText();
 		if ( validarEntrada(host, recurso, portaCampo)) {
 			int porta = Integer.valueOf(portaCampo);
-			
+			cliente.enviarArquivo(recurso, host, porta);
 		} 
 			
 	}
