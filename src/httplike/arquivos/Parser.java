@@ -34,6 +34,7 @@ public class Parser {
 		String linha = br.readLine();
 		
 		ArrayList<String> linhas = new ArrayList<String>();
+		linhas.add(linha);
 		while (linha != null) {
 			linha = br.readLine();	
 			if (linha == null) {

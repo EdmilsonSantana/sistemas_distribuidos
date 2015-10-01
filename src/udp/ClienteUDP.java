@@ -33,18 +33,20 @@ public class ClienteUDP {
 			Collection<String> arquivoLido = parser.lerArquivoPorLinha(path);
 			Object[] arquivo = arquivoLido.toArray();
 			for (int sequencia = 1; sequencia < arquivo.length; sequencia++) {
-				String linha = String.valueOf(arquivo[sequencia]); 
+				String linha = String.valueOf(arquivo[sequencia - 1]); 
 				byte[] pacote = adicionarCabecalhoPacote(linha.getBytes(), sequencia);
 				enviarPacote(host, porta, pacote);
+				/*
 				try {
 					receberPacote(porta);
 				} catch (InterruptedIOException e) {
 					String ultimoPacote = (String) confirmados.toArray()[confirmados.size() - 1];
 					sequencia = Integer.valueOf(ultimoPacote).intValue();
-				}
+				} */
 
 			}
 		} catch (IOException e) {
+			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
 	}
@@ -67,10 +69,13 @@ public class ClienteUDP {
 		}
 	}
 
-	public byte[] adicionarCabecalhoPacote(byte[] pacote, int valor) {
+	public byte[] adicionarCabecalhoPacote(byte[] pacote , int valor) {
 		byte[] sequence = Integer.toBinaryString(valor).getBytes();
-		byte[] cabecalho = new byte[pacote.length + sequence.length];
-		return cabecalho;
+		byte[] pacoteComCabecalho = new byte[pacote.length + sequence.length];
+		System.arraycopy(sequence, 0, pacoteComCabecalho, 0, sequence.length);
+		System.arraycopy(pacote, 0, pacoteComCabecalho, sequence.length, pacote.length);
+		return pacoteComCabecalho;
 	}
+
 
 }
