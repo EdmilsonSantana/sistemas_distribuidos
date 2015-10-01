@@ -1,6 +1,5 @@
 package udp;
 
-import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -10,16 +9,9 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
-
-import httplike.cliente.Cliente;
 
 public class UdpUI {
 	private static UdpUI ui = null;
@@ -102,7 +94,7 @@ public class UdpUI {
 	}
 
 	private void solicitacao() {
-		ClienteUDP cliente = new ClienteUDP();
+		ClienteUDP cliente = ClienteUDP.getInstancia();
 		String portaCampo = campoPorta.getText();
 		String host = campoHost.getText();
 		String recurso = campoSolicitacao.getText();
