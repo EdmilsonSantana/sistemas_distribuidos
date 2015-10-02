@@ -52,14 +52,18 @@ public class ClienteUDP {
 			Collection<String> arquivoLido = parser.lerArquivoPorLinha(path);
 			Object[] arquivo = arquivoLido.toArray();
 			for (int sequencia = 1; sequencia <= arquivo.length; sequencia++) {
+				
 				String linha = String.valueOf(arquivo[sequencia - 1]); 
 				pacote = adicionarCabecalhoPacote(linha.getBytes(), sequencia);
 				enviarPacote(host, porta, pacote);
+				falha = false;
 				System.out.println("Enviando pacote " + sequencia);
 				System.out.println("Conteúdo do pacote: " + linha);
 				try {
 					receberPacote(porta);
 				} catch (InterruptedIOException e) {
+					falha = true;
+					tentativas++;
 					if ( tentativas == 5 ) {
 						System.out.println("Não foi possível contatar o Servidor.");
 						break;
@@ -72,7 +76,11 @@ public class ClienteUDP {
 						System.out.println("Falha! Último ACK: " + ultimoPacote);
 						sequencia = Integer.valueOf(ultimoPacote).intValue();
 					}
-				} 
+				}  finally {
+					if( !falha ) {
+						tentativas = 0;
+					}
+				}
 			}
 			pacote = new String("").getBytes();
 			enviarPacote(host, porta, adicionarCabecalhoPacote(pacote, 0));

@@ -55,6 +55,18 @@ public class ServidorUDP {
 		return pacote.substring(0, 1);
 	}
 	
+	private boolean verificarOrdem(String ack) {
+		boolean emOrdem = Boolean.TRUE;
+		int valorACK = Integer.valueOf(ack).intValue();
+		if ( valorACK != 1 ) {
+			Integer ultimoACK = Integer.valueOf((String)confirmacoes.toArray()[confirmacoes.size() - 1]);
+			if ( !(valorACK - 1 == ultimoACK.intValue()) ) {
+				emOrdem = Boolean.FALSE;
+			}
+		}
+		return emOrdem;
+	}
+	
 	private void salvarArquivo() {
 		try {
 			parser.escreverArquivoPorLinha(pacotes, PATH_ARQUIVO );
@@ -74,21 +86,28 @@ public class ServidorUDP {
 				System.out.println(packet.getSocketAddress());
 				pacote = new String(buffer, 0, packet.getLength());
 				ack = extrairACK(pacote);
-				confirmacoes.add(ack);
 				pacote = extrairPacote(pacote);
-				pacotes.add(pacote);
-				enviarPacote(packet.getAddress().getHostAddress(), PORTA_CLIENTE, ack.getBytes());
-				System.out.println("Pacote - " + pacote);
-				System.out.println("ACK - " + ack );
 				if ( "0".equals(ack) ) {
 					System.out.println("Salvando arquivo...");
 					salvarArquivo();
 					System.out.println("Esvaziando buffers...");
 					confirmacoes.removeAll(confirmacoes);
 					pacotes.removeAll(pacotes);
+				} else {
+					if( verificarOrdem(ack)) {
+						enviarPacote(packet.getAddress().getHostAddress(), PORTA_CLIENTE, ack.getBytes());
+						confirmacoes.add(ack);
+						pacotes.add(pacote);
+						System.out.println("Pacote - " + pacote);
+						System.out.println("ACK - " + ack );
+					} else {
+						System.out.println("Fora de ordem! Recebido pacote com ACK - " + ack );
+					}
+					
+					
 				}
+				
 			} while ( Boolean.TRUE );
-			System.out.println("acabou");
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
