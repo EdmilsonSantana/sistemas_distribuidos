@@ -1,0 +1,60 @@
+http://www.mballem.com/post/chat-multi-usurios-com-socket-e-interface-swing#.UxlPoD-wJ-Y
+/**
+ * @version 1.10 1997-06-27
+ * @author Cay Horstmann
+ */
+
+import java.io.*;
+import java.net.*;
+import java.util.*;
+
+public class ChatServer
+{  public static void main(String[] args )
+   {  int i = 1;
+      try
+      {  ServerSocket s = new ServerSocket(8189);
+         Scanner sc = new Scanner(System.in);   
+         Socket incoming = s.accept( );
+         System.out.println("conexão aceita");
+         PrintWriter out = new PrintWriter
+            (incoming.getOutputStream(), true /* autoFlush */);
+         out.println( "Hello! Enter BYE to exit." );
+            new ThreadedHandler(incoming).start();
+         for (;;)
+          {
+            String linha = sc.next();
+            out.println ("Servidor escreveu: " + linha);   
+          }
+      }
+      catch (Exception e)
+      {  System.out.println(e); }
+   }
+}
+
+class ThreadedHandler extends Thread
+{  public ThreadedHandler(Socket i)
+   { incoming = i; }
+
+   public void run()
+   {  try
+      {  BufferedReader in = new BufferedReader
+            (new InputStreamReader(incoming.getInputStream()));
+         boolean done = false;
+         while (!done)
+         {  String str = in.readLine();
+            if (str == null) done = true;
+            else
+            {  System.out.println ("Client escreveu; " + str);
+               if (str.trim().equals("BYE"))
+                  done = true;
+            }
+         }
+         incoming.close();
+      }
+      catch (Exception e)
+      {  System.out.println(e);
+      }
+   }
+   private Socket incoming;
+}
+
