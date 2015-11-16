@@ -4,8 +4,15 @@ package rmi;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 public class RemoteShell {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 28933328896264764L;
 
 	private Runtime runtime;
 
@@ -20,15 +27,10 @@ public class RemoteShell {
 		setStdin("");
 		setStderr("");
 	}
-
-	public void commandLine(String command, String[] envp, File dir) throws IOException, InterruptedException {
-
-		process = runtime.exec(command, envp, dir);
+	public void executeCommmand(String command) throws IOException, InterruptedException {
+		File dir =  new File("/");
+		process = runtime.exec(command, null, dir);
 		processData();
-	}
-
-	public void executeCommmand(String command) {
-
 	}
 
 	private void processData() throws InterruptedException {
@@ -45,6 +47,7 @@ public class RemoteShell {
 		process.waitFor();
 
 		setStdin(stdinBuffer.toString());
+		System.out.print(getStdin());
 		setStderr(stderrBuffer.toString());
 	}
 
@@ -63,6 +66,7 @@ public class RemoteShell {
 		public void run() {
 
 			try {
+				
 				int nextChar;
 				while ((nextChar = m_stream.read()) != -1)
 					m_captureBuffer.append((char) nextChar);
@@ -70,20 +74,6 @@ public class RemoteShell {
 				System.err.println(ioex);
 			}
 		}
-	}
-
-	public static void main(String[] args) {
-
-		RemoteShell shell = new RemoteShell();
-		try {
-			shell.commandLine("cmd /c dir", null, new File("/"));
-			System.out.println(shell.getStdin());
-			System.out.println(shell.getStderr());
-		} catch (IOException | InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 	}
 
 	public String getStdin() {
@@ -95,9 +85,9 @@ public class RemoteShell {
 
 		this.stdin = stdin;
 	}
-
+	
 	public String getStderr() {
-
+		
 		return stderr;
 	}
 
