@@ -1,4 +1,4 @@
-package rmi;
+package rmi.shell;
 
 import java.io.IOException;
 import java.rmi.RemoteException;

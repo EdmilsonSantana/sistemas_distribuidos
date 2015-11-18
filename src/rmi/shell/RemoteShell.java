@@ -1,7 +1,9 @@
 
-package rmi;
+package rmi.shell;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.rmi.RemoteException;
@@ -33,6 +35,10 @@ public class RemoteShell {
 		processData();
 	}
 
+	public byte[] processFile(String fileName) throws FileNotFoundException {
+		FileOutputStream output = new FileOutputStream(new File("")); 
+		return null;
+	}
 	private void processData() throws InterruptedException {
 
 		StringBuffer stdinBuffer = new StringBuffer();
