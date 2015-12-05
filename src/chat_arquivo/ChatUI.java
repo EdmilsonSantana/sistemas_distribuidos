@@ -1,0 +1,181 @@
+package chat_arquivo;
+
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+public class ChatUI {
+	private static ChatUI ui = null;
+
+	private JFrame janela;
+	private JTextField campoNomeCliente;
+	private JTextField campoEscritaMensagem;
+	private JPanel painelCampoNomeCliente;
+	private JPanel painelBotaoEntrarNaSala;
+	private JButton botaoEntrarNaSala;
+	private JTextArea areaDeMensagens;
+	private JPanel painelAreaDeConversa;
+	private JButton botaoEscolhaDeArquivo;
+	private JButton botaoEnviarMensagem;
+	private JFileChooser seletorDeArquivo;
+	private JPanel painelAreaDeMensagem;
+	
+	private ChatUI() {
+		super();
+		montaTela();
+	}
+
+	public static ChatUI getInstancia() {
+		if (ui == null) {
+			ui = new ChatUI();
+		}
+		return ui;
+	}
+
+	public void montaTela() {
+		preparaJanela();
+		prepararPaineis();
+		prepararCampos();
+		prepararBotaoEntrarNaSala();
+		prepararBotaoEnviarMensagem();
+		prepararBotaoEscolhaDeArquivo();
+		mostraJanela();
+
+	}
+
+	private void preparaJanela() {
+		janela = new JFrame("");
+		janela.setLayout(new BoxLayout(janela.getContentPane(), BoxLayout.Y_AXIS));
+		janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+
+	private void mostraJanela() {
+		janela.pack();
+		janela.setLocationRelativeTo(null);
+		janela.setVisible(true);
+	}
+	
+	private void prepararPaineisEntradaNaTrocaDeMensagens() {
+		painelCampoNomeCliente = new JPanel();
+		painelBotaoEntrarNaSala = new JPanel();
+		painelCampoNomeCliente.setLayout(new GridLayout(1, 0));
+		painelBotaoEntrarNaSala.setLayout(new FlowLayout(FlowLayout.CENTER));
+		janela.add(painelCampoNomeCliente);
+		janela.add(painelBotaoEntrarNaSala);
+	}
+	
+	private void prepararPaineisNaTrocaDeMensagens() {
+		painelAreaDeMensagem = new JPanel();
+		painelAreaDeMensagem.setLayout(new GridLayout(1, 0));
+		painelAreaDeConversa = new JPanel();
+		painelAreaDeConversa.setLayout(new FlowLayout(FlowLayout.CENTER));
+	}
+	
+	private void prepararPaineis() {
+		prepararPaineisEntradaNaTrocaDeMensagens();
+		prepararPaineisNaTrocaDeMensagens();
+	}
+
+	private void prepararCamposPaineisDeEntradaChat() {
+		campoNomeCliente = new JTextField(15);
+		campoNomeCliente.setToolTipText("Apelido");
+		JLabel recurso = new JLabel("Apelido");
+		painelCampoNomeCliente.add(recurso);
+		painelCampoNomeCliente.add(campoNomeCliente);
+	}
+
+	private void prepararCamposAreaTrocaDeMensagens() {
+		areaDeMensagens = new JTextArea(200, 200);
+		painelAreaDeMensagem.add(areaDeMensagens);
+		campoEscritaMensagem = new JTextField(15);
+		painelAreaDeConversa.add(campoEscritaMensagem);
+	}
+
+	private void prepararCampos() {
+
+		prepararCamposPaineisDeEntradaChat();
+		prepararCamposAreaTrocaDeMensagens();
+
+	}
+
+	private void solicitacao() {
+
+	}
+
+	private void entrarAreaDeTrocaDeMensagens() {
+		janela.remove(painelBotaoEntrarNaSala);
+		janela.remove(painelCampoNomeCliente);
+		janela.add(painelAreaDeMensagem);
+		janela.add(painelAreaDeConversa);
+		janela.revalidate();
+		
+	}
+
+	private void prepararBotaoEnviarMensagem() {
+		botaoEnviarMensagem = new JButton("Enviar");
+		botaoEnviarMensagem.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				
+			}
+		});
+		painelAreaDeConversa.add(botaoEnviarMensagem);
+	}
+	private void prepararBotaoEscolhaDeArquivo() {
+		botaoEscolhaDeArquivo = new JButton("");
+		seletorDeArquivo = new JFileChooser();
+		botaoEscolhaDeArquivo.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int resultadoDoEvento = seletorDeArquivo.showOpenDialog(janela);
+				if (resultadoDoEvento == JFileChooser.APPROVE_OPTION) {
+					File file = seletorDeArquivo.getSelectedFile();
+					System.out.println(file);
+				}
+
+			}
+		});
+		painelAreaDeConversa.add(botaoEscolhaDeArquivo);
+	}
+
+	private void prepararBotaoEntrarNaSala() {
+
+		botaoEntrarNaSala = new JButton("Entrar");
+		painelBotaoEntrarNaSala.add(botaoEntrarNaSala);
+		botaoEntrarNaSala.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				entrarAreaDeTrocaDeMensagens();
+			}
+		});
+
+		painelBotaoEntrarNaSala.add(botaoEntrarNaSala);
+	}
+
+	private boolean validarEntrada(String host, String recurso, String porta) {
+		if ("".equals(host) || "".equals(recurso) || "".equals(porta)) {
+			return false;
+		}
+		return true;
+	}
+
+	public static void main(String[] args) {
+
+		ChatUI.getInstancia();
+	}
+
+}
