@@ -61,6 +61,7 @@ class ThreadedEchoHandler extends Thread {
 			boolean valido = true;
 			boolean entrou = true;
 			do {
+				in.readBoolean();
 				apelido = in.readUTF();
 				apelido = apelido.replaceAll("[^(\\x28-\\x7F)]", "").trim();
 				System.out.println(apelido);
@@ -75,20 +76,35 @@ class ThreadedEchoHandler extends Thread {
 			if (entrou) {
 				
 				for (DataOutputStream usuario : usuarios) {
+					usuario.writeBoolean(Boolean.FALSE);
 					usuario.writeUTF(apelido + " entrou!!");
 				}
 
 				boolean done = false;
 				while (!done) {
+					boolean tipoEntrada = in.readBoolean();
 					String str = in.readUTF();
+				
 					System.out.println(incoming + " - " + apelido + " - " + str);
+					
 					for (DataOutputStream usuario : usuarios) {
+						usuario.writeBoolean(tipoEntrada);
+						if ( tipoEntrada ) {
+							InputStream is = incoming.getInputStream();    
+							byte[] cbuffer = new byte[1024];
+				            int bytesRead;
+				            usuario.writeUTF(str);
+							while ((bytesRead = is.read(cbuffer)) != -1) {
+								usuario.write(cbuffer, 0, bytesRead);
+								usuario.flush();
+				            }
+						} else {
+							if (str == null) done = true;
+							else {
+								usuario.writeUTF(apelido + ":" + str);
 
-						if (str == null) done = true;
-						else {
-							usuario.writeUTF(apelido + "(" + counter + "):" + str);
-
-							if (str.trim().equals("BYE")) done = true;
+								if (str.trim().equals("BYE")) done = true;
+							}
 						}
 					}
 				}
@@ -115,6 +131,10 @@ class ThreadedEchoHandler extends Thread {
 			return false;
 		} 
 		return true;
+	}
+	
+	private void enviarMensagens() {
+		
 	}
 
 }

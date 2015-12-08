@@ -116,6 +116,7 @@ public class ChatUI {
 	private void prepararCamposAreaTrocaDeMensagens() {
 
 		areaDeMensagens = new JTextArea(200, 200);
+		//areaDeMensagens.scrollRectToVisible(aRect);
 		painelAreaDeMensagem.add(areaDeMensagens);
 		campoEscritaMensagem = new JTextField(15);
 		painelAreaDeConversa.add(campoEscritaMensagem);
@@ -139,7 +140,7 @@ public class ChatUI {
 	}
 
 	public void escreverMensagemAreaTexto(String msg) {
-		areaDeMensagens.append(msg);
+		areaDeMensagens.append(msg.concat("\n"));
 	}
 
 	private void prepararBotaoEnviarMensagem() {
@@ -158,7 +159,7 @@ public class ChatUI {
 
 	private void prepararBotaoEscolhaDeArquivo() {
 
-		botaoEscolhaDeArquivo = new JButton("");
+		botaoEscolhaDeArquivo = new JButton("Anexo");
 		seletorDeArquivo = new JFileChooser();
 		botaoEscolhaDeArquivo.addActionListener(new ActionListener(){
 
