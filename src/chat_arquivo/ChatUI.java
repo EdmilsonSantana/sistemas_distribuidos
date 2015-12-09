@@ -40,6 +40,8 @@ public class ChatUI {
 	private JButton botaoEscolhaDeArquivo;
 
 	private JButton botaoEnviarMensagem;
+	
+	private JButton botaoSair;
 
 	private JFileChooser seletorDeArquivo;
 
@@ -62,6 +64,7 @@ public class ChatUI {
 		prepararBotaoEntrarNaSala();
 		prepararBotaoEnviarMensagem();
 		prepararBotaoEscolhaDeArquivo();
+		prepararBotaoSair();
 		mostraJanela();
 
 	}
@@ -135,6 +138,7 @@ public class ChatUI {
 		janela.remove(painelCampoNomeCliente);
 		janela.add(painelAreaDeMensagem);
 		janela.add(painelAreaDeConversa);
+		janela.setSize (600, 600);
 		janela.revalidate();
 
 	}
@@ -143,6 +147,20 @@ public class ChatUI {
 		areaDeMensagens.append(msg.concat("\n"));
 	}
 
+	private void prepararBotaoSair(){
+		botaoSair = new JButton("Sair");
+		botaoSair.addActionListener(new ActionListener(){
+			
+			@Override
+			public void actionPerformed(ActionEvent e){
+				cliente.enviarMensagem("Saiu");
+				janela.dispose();
+			}
+		});
+		painelAreaDeConversa.add(botaoSair);
+		
+	}
+	
 	private void prepararBotaoEnviarMensagem() {
 
 		botaoEnviarMensagem = new JButton("Enviar");
