@@ -92,6 +92,13 @@ class ThreadedEchoHandler extends Thread {
 						if ( tipoEntrada ) {
 							InputStream is = incoming.getInputStream();    
 							byte[] cbuffer = new byte[1024];
+							byte [] mybytearray  = new byte [(int)((CharSequence) is).length()]; 
+						      is.read(mybytearray,0,mybytearray.length);  
+						      OutputStream os = incoming.getOutputStream();  
+						      System.out.println("Enviando...");  
+						      os.write(mybytearray,0,mybytearray.length);  
+						      os.flush();  
+						      incoming.close(); 
 				            int bytesRead;
 				            usuario.writeUTF(str);
 							while ((bytesRead = is.read(cbuffer)) != -1) {

@@ -9,6 +9,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+import org.omg.CORBA.portable.InputStream;
+
 public class ClienteChat {
 
 	private ChatUI ui;
@@ -74,11 +76,31 @@ public class ClienteChat {
 			inputStream = new FileInputStream(arquivo);
 			byte[] buffer = new byte[(int) arquivo.length()];
 			inputStream.read(buffer);
+			java.io.InputStream is = socket.getInputStream();
 			inputStream.close();
 			DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 			out.writeBoolean(Boolean.TRUE);
 			out.writeUTF(arquivo.getName());
 			out.write(buffer);
+			
+			
+			byte[] mybytearray;
+			Object bytesRead = is.read(mybytearray,0,mybytearray.length);  
+		    Object current = bytesRead;  
+		  
+		    do {  
+		       bytesRead = is.read(mybytearray, (int) current, (mybytearray.length));  
+		       if(current >= 0) 
+		    	   {
+		    	   	current++;  
+		    	   }
+		    } while(current > -1);  
+		  
+		  
+		  
+		    is.close();  
+		  
+		
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
