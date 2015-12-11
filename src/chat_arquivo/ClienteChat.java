@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.logging.Logger;
 
 public class ClienteChat {
 
@@ -73,15 +74,14 @@ public class ClienteChat {
 		try {
 			inputStream = new FileInputStream(arquivo);
 			byte[] buffer = new byte[(int) arquivo.length()];
-			inputStream.read(buffer);
-			inputStream.close();
 			DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 			out.writeBoolean(Boolean.TRUE);
 			out.writeUTF(arquivo.getName());
+			out.writeLong(arquivo.length());
+			inputStream.read(buffer);
 			out.write(buffer);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
 		} 
 
 	}
@@ -108,13 +108,11 @@ public class ClienteChat {
 						boolean tipoEntrada = in.readBoolean();
 						String msg = in.readUTF();
 						if ( tipoEntrada ) {
+							long size = in.readLong();
 							FileOutputStream file = new FileOutputStream(new File(downloadPath.concat(msg)));
-							byte[] cbuffer = new byte[1024];
-				            int bytesRead;
-							while ((bytesRead = in.read(cbuffer)) != -1) {
-								file.write(cbuffer, 0, bytesRead);
-								file.flush();
-				            } 
+							byte[] cbuffer = new byte[(int) size];
+				            in.read(cbuffer);
+							file.write(cbuffer);
 							file.close();
 						} else {
 							ui.escreverMensagemAreaTexto(msg);

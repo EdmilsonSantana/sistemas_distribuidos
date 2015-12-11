@@ -153,7 +153,7 @@ public class ChatUI {
 			
 			@Override
 			public void actionPerformed(ActionEvent e){
-				cliente.enviarMensagem("Saiu");
+				cliente.enviarMensagem("BYE");
 				janela.dispose();
 			}
 		});

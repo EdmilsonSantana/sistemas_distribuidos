@@ -72,9 +72,9 @@ class ThreadedEchoHandler extends Thread {
 				valido = validaLogin(apelido);
 				out.writeBoolean(valido);
 			} while (!valido);
-			
+
 			if (entrou) {
-				
+
 				for (DataOutputStream usuario : usuarios) {
 					usuario.writeBoolean(Boolean.FALSE);
 					usuario.writeUTF(apelido + " entrou!!");
@@ -84,20 +84,24 @@ class ThreadedEchoHandler extends Thread {
 				while (!done) {
 					boolean tipoEntrada = in.readBoolean();
 					String str = in.readUTF();
-				
 					System.out.println(incoming + " - " + apelido + " - " + str);
-					
+					long size = 0L;
+					byte[] cbuffer = new byte[(int) size];
+					if (tipoEntrada) {
+						size = in.readLong();
+						in.read(cbuffer);
+						System.out.println("Acabou a leitura de um arquivo");
+					}
 					for (DataOutputStream usuario : usuarios) {
 						usuario.writeBoolean(tipoEntrada);
-						if ( tipoEntrada ) {
-							InputStream is = incoming.getInputStream();    
-							byte[] cbuffer = new byte[1024];
-				            int bytesRead;
-				            usuario.writeUTF(str);
-							while ((bytesRead = is.read(cbuffer)) != -1) {
-								usuario.write(cbuffer, 0, bytesRead);
-								usuario.flush();
-				            }
+						if (tipoEntrada) {
+							usuario.writeUTF(str);
+							usuario.writeLong(size);
+							usuario.write(cbuffer);
+							usuario.flush();
+
+							System.out.println("Acabou a escrita do arquivo");
+
 						} else {
 							if (str == null) done = true;
 							else {
@@ -129,12 +133,12 @@ class ThreadedEchoHandler extends Thread {
 
 		if ((login == null) || (login.isEmpty())) {
 			return false;
-		} 
+		}
 		return true;
 	}
-	
+
 	private void enviarMensagens() {
-		
+
 	}
 
 }
