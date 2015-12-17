@@ -101,18 +101,22 @@ class ThreadedEchoHandler extends Thread {
 						}
 					}
 					if (tipoEntrada) {
-						
+						Long tamanho = in.readLong();
+						out.writeLong(tamanho);
 						System.out.println("Iniciando leitura no servidor");
-						while (incoming.getInputStream().available() != 0) {
-							FileOutputStream file = new FileOutputStream(new File("C:\\Users\\EdmilsonS\\Desktop".concat(str)));
-							bytesRead = incoming.getInputStream().read(buffer);
+						int bytesTotaisLido = 0;
+						//FileOutputStream file = new FileOutputStream(new File("C:\\Users\\EdmilsonS\\Desktop\\".concat(str)));
+						while ( bytesTotaisLido < tamanho) {
 							System.out.println("Disponiveis: " + incoming.getInputStream().available());
+							bytesRead = incoming.getInputStream().read(buffer);					
 							System.out.println("Lidos: " + bytesRead);
-							file.write(buffer, 0, bytesRead);
-							file.flush();
-							file.close();
-							
+							bytesTotaisLido += bytesRead;
+							for ( OutputStream usuario : usuarios) {
+								usuario.write(buffer, 0, bytesRead);
+								usuario.flush();
+							}		
 						}
+					//	file.close();
 
 						System.out.println("Acabou a leitura de um arquivo");
 					}

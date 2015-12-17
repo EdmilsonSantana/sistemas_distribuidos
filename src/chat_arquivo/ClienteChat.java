@@ -77,6 +77,7 @@ public class ClienteChat {
 			DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 			out.writeBoolean(Boolean.TRUE);
 			out.writeUTF(arquivo.getName());
+			out.writeLong(arquivo.length());
 			while ((bytesRead = fileInputStream.read(buffer)) != -1) {
 				socket.getOutputStream().write(buffer, 0, bytesRead);
 				socket.getOutputStream().flush();
@@ -111,18 +112,20 @@ public class ClienteChat {
 						boolean tipoEntrada = in.readBoolean();
 						String msg = in.readUTF();
 						if ( tipoEntrada ) {
+							Long tamanho = in.readLong();
 							System.out.println("Cliente iniciou a escrita");
 							FileOutputStream file = new FileOutputStream(new File(downloadPath.concat(msg)));
 							byte[] buffer = new byte[1024];
 							int bytesRead;
-							long totalDeBytesLido = 0;
-							while ((bytesRead = socket.getInputStream().read(buffer)) != -1 ) {
-								totalDeBytesLido += bytesRead;
-							
+							long bytesTotaisLido = 0;
+							while (bytesTotaisLido < tamanho) {
 								System.out.println("Disponiveis: " + socket.getInputStream().available());
+								bytesRead = socket.getInputStream().read(buffer);
 								System.out.println("Lidos: " + bytesRead);
+								bytesTotaisLido += bytesRead;
 								file.write(buffer, 0, bytesRead);
 								file.flush();	
+
 							}
 							file.close();
 							System.out.println("Cliente acabou a escrita");
