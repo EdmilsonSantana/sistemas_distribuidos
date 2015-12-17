@@ -86,15 +86,17 @@ class ThreadedEchoHandler extends Thread {
 					String str = in.readUTF();
 					System.out.println(incoming + " - " + apelido + " - " + str);
 					long size = 0L;
-					byte[] cbuffer = new byte[(int) size];
+					byte[] cbuffer = null;
 					if (tipoEntrada) {
 						size = in.readLong();
+						cbuffer = new byte[(int) size];
 						in.read(cbuffer);
 						System.out.println("Acabou a leitura de um arquivo");
 					}
 					for (DataOutputStream usuario : usuarios) {
 						usuario.writeBoolean(tipoEntrada);
 						if (tipoEntrada) {
+							usuario.writeUTF(apelido + " está transferindo !!" + str);
 							usuario.writeUTF(str);
 							usuario.writeLong(size);
 							usuario.write(cbuffer);
@@ -137,8 +139,6 @@ class ThreadedEchoHandler extends Thread {
 		return true;
 	}
 
-	private void enviarMensagens() {
-
-	}
+	
 
 }

@@ -81,7 +81,7 @@ public class ClienteChat {
 			inputStream.read(buffer);
 			out.write(buffer);
 		} catch (IOException e) {
-			
+			e.printStackTrace();
 		} 
 
 	}
@@ -90,7 +90,7 @@ public class ClienteChat {
 
 		private Socket socket;
 
-		private String downloadPath = "C:\\Users\\EdmilsonS\\";
+		private String downloadPath = System.getProperty("user.dir")+"\\src\\chat_arquivo\\arquivos recebidos\\";
 		
 		public LeituraMensagemThread(Socket socket) {
 			this.socket = socket;
@@ -130,12 +130,12 @@ public class ClienteChat {
 
 		}
 	}
-
+	
 
 
 	public static void main(String[] args) {
 
 		ClienteChat cliente = new ClienteChat();
-
+		//System.out.println(System.getProperty("user.dir")+"\\chat_arquivo\\arquivos recebidos");
 	}
 }
