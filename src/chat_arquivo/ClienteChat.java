@@ -151,6 +151,6 @@ public class ClienteChat {
 	public static void main(String[] args) {
 
 		ClienteChat cliente = new ClienteChat();
-		//System.out.println(System.getProperty("user.dir")+"\\chat_arquivo\\arquivos recebidos");
+		
 	}
 }

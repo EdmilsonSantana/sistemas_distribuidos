@@ -187,9 +187,9 @@ public class ChatUI {
 				int resultadoDoEvento = seletorDeArquivo.showOpenDialog(janela);
 				if (resultadoDoEvento == JFileChooser.APPROVE_OPTION) {
 					File arquivo = seletorDeArquivo.getSelectedFile();
-
-					cliente.enviarArquivoDoDiretorio(arquivo);
-
+					if ( arquivo != null ) {
+						cliente.enviarArquivoDoDiretorio(arquivo);
+					}
 				}
 
 			}
