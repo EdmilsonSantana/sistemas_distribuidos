@@ -10,7 +10,6 @@ import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.regex.Pattern;
 
 /* TODO: Decrementar quantidade de usuários quando um usuario sair, fazer um login */
 public class ServidorChat {
@@ -20,13 +19,12 @@ public class ServidorChat {
 		int i = 1;
 		try {
 			ServerSocket serverSocket = new ServerSocket(6789);
-			Collection<DataOutputStream> usuarios = new ArrayList<DataOutputStream>();
+			Collection<OutputStream> usuarios = new ArrayList<OutputStream>();
 			for (;;) {
 				Socket incoming = serverSocket.accept();
 				System.out.println("Spawning " + i);
-				DataOutputStream out = new DataOutputStream(incoming.getOutputStream());
-				usuarios.add(out);
-				new ThreadedEchoHandler(out, incoming, usuarios, i).start();
+				usuarios.add(incoming.getOutputStream());
+				new ThreadedEchoHandler(incoming, usuarios, i).start();
 				i++;
 			}
 		} catch (Exception e) {
@@ -37,26 +35,25 @@ public class ServidorChat {
 
 class ThreadedEchoHandler extends Thread {
 
-	private Collection<DataOutputStream> usuarios;
+	private Collection<OutputStream> usuarios;
 
 	private int counter;
 
 	private Socket incoming;
 
-	private DataOutputStream out;
-
-	public ThreadedEchoHandler(DataOutputStream out, Socket i, Collection<DataOutputStream> lista, int c) {
+	public ThreadedEchoHandler(Socket i, Collection<OutputStream> lista, int c) {
 		usuarios = lista;
 		counter = c;
 		incoming = i;
-		this.out = out;
 	}
 
 	public void run() {
 
 		try {
 			DataInputStream in;
+			DataOutputStream out;
 			in = new DataInputStream(incoming.getInputStream());
+			out = new DataOutputStream(incoming.getOutputStream());
 			String apelido;
 			boolean valido = true;
 			boolean entrou = true;
@@ -75,9 +72,10 @@ class ThreadedEchoHandler extends Thread {
 
 			if (entrou) {
 
-				for (DataOutputStream usuario : usuarios) {
-					usuario.writeBoolean(Boolean.FALSE);
-					usuario.writeUTF(apelido + " entrou!!");
+				for (OutputStream usuario : usuarios) {
+					DataOutputStream outData = new DataOutputStream(usuario);
+					outData.writeBoolean(Boolean.FALSE);
+					outData.writeUTF(apelido + " entrou!!");
 				}
 
 				boolean done = false;
@@ -85,38 +83,45 @@ class ThreadedEchoHandler extends Thread {
 					boolean tipoEntrada = in.readBoolean();
 					String str = in.readUTF();
 					System.out.println(incoming + " - " + apelido + " - " + str);
-					long size = 0L;
-					byte[] cbuffer = null;
-					if (tipoEntrada) {
-						size = in.readLong();
-						cbuffer = new byte[(int) size];
-						in.read(cbuffer);
-						System.out.println("Acabou a leitura de um arquivo");
-					}
-					for (DataOutputStream usuario : usuarios) {
-						usuario.writeBoolean(tipoEntrada);
-						if (tipoEntrada) {
-							usuario.writeUTF(apelido + " está transferindo !!" + str);
-							usuario.writeUTF(str);
-							usuario.writeLong(size);
-							usuario.write(cbuffer);
-							usuario.flush();
-
-							System.out.println("Acabou a escrita do arquivo");
-
-						} else {
+					byte[] buffer = new byte[1024];
+					int bytesRead;
+					// Informa o tipo de entrada
+					for (OutputStream usuario : usuarios) {
+						DataOutputStream outData = new DataOutputStream(usuario);
+						outData.writeBoolean(tipoEntrada);
+						if (!tipoEntrada) {
 							if (str == null) done = true;
 							else {
-								usuario.writeUTF(apelido + ":" + str);
+								outData.writeUTF(apelido + ":" + str);
 
 								if (str.trim().equals("BYE")) done = true;
 							}
+						} else {
+							outData.writeUTF(str);
 						}
 					}
+					if (tipoEntrada) {
+						
+						System.out.println("Iniciando leitura no servidor");
+						while (incoming.getInputStream().available() != 0) {
+							FileOutputStream file = new FileOutputStream(new File("C:\\Users\\EdmilsonS\\Desktop".concat(str)));
+							bytesRead = incoming.getInputStream().read(buffer);
+							System.out.println("Disponiveis: " + incoming.getInputStream().available());
+							System.out.println("Lidos: " + bytesRead);
+							file.write(buffer, 0, bytesRead);
+							file.flush();
+							file.close();
+							
+						}
+
+						System.out.println("Acabou a leitura de um arquivo");
+					}
+
 				}
 
-				for (DataOutputStream usuario : usuarios) {
-					usuario.writeUTF(apelido + " saiu!!");
+				for (OutputStream usuario : usuarios) {
+					DataOutputStream outData = new DataOutputStream(usuario);
+					outData.writeUTF(apelido + " saiu!!");
 				}
 			}
 
@@ -138,7 +143,5 @@ class ThreadedEchoHandler extends Thread {
 		}
 		return true;
 	}
-
-	
 
 }

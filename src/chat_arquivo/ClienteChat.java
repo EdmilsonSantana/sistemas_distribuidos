@@ -8,7 +8,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.logging.Logger;
 
 public class ClienteChat {
 
@@ -70,16 +69,20 @@ public class ClienteChat {
 
 	public void enviarArquivoDoDiretorio(File arquivo) {
 
-		FileInputStream inputStream;
+		FileInputStream fileInputStream;
 		try {
-			inputStream = new FileInputStream(arquivo);
-			byte[] buffer = new byte[(int) arquivo.length()];
+			fileInputStream = new FileInputStream(arquivo);
+			byte[] buffer = new byte[1024];
+			int bytesRead;
 			DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 			out.writeBoolean(Boolean.TRUE);
 			out.writeUTF(arquivo.getName());
-			out.writeLong(arquivo.length());
-			inputStream.read(buffer);
-			out.write(buffer);
+			while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+				socket.getOutputStream().write(buffer, 0, bytesRead);
+				socket.getOutputStream().flush();
+			}
+			System.out.println("Arquivo " + arquivo.getName() + "enviado");
+			fileInputStream.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
@@ -108,12 +111,21 @@ public class ClienteChat {
 						boolean tipoEntrada = in.readBoolean();
 						String msg = in.readUTF();
 						if ( tipoEntrada ) {
-							long size = in.readLong();
+							System.out.println("Cliente iniciou a escrita");
 							FileOutputStream file = new FileOutputStream(new File(downloadPath.concat(msg)));
-							byte[] cbuffer = new byte[(int) size];
-				            in.read(cbuffer);
-							file.write(cbuffer);
+							byte[] buffer = new byte[1024];
+							int bytesRead;
+							long totalDeBytesLido = 0;
+							while ((bytesRead = socket.getInputStream().read(buffer)) != -1 ) {
+								totalDeBytesLido += bytesRead;
+							
+								System.out.println("Disponiveis: " + socket.getInputStream().available());
+								System.out.println("Lidos: " + bytesRead);
+								file.write(buffer, 0, bytesRead);
+								file.flush();	
+							}
 							file.close();
+							System.out.println("Cliente acabou a escrita");
 						} else {
 							ui.escreverMensagemAreaTexto(msg);
 						}
