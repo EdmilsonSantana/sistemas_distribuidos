@@ -127,16 +127,17 @@ class ThreadedEchoHandler extends Thread {
 
 				for (OutputStream usuario : usuarios) {
 					DataOutputStream outData = new DataOutputStream(usuario);
+					outData.writeBoolean(Boolean.FALSE);
 					outData.writeUTF(apelido + " saiu!!");
 				}
 			}
 
-			incoming.close();
+			
 
-			if (usuarios.contains(out)) {
-				usuarios.remove(out);
+			if (usuarios.contains(incoming.getOutputStream())) {
+				usuarios.remove(incoming.getOutputStream());
 			}
-
+			incoming.close();
 		} catch (Exception e) {
 			System.out.println(e);
 		}
