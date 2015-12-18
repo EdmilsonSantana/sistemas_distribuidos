@@ -83,6 +83,7 @@ class ThreadedEchoHandler extends Thread {
 					boolean tipoEntrada = in.readBoolean();
 					String str = in.readUTF();
 					System.out.println(incoming + " - " + apelido + " - " + str);
+
 					byte[] buffer = new byte[1024];
 					int bytesRead;
 					// Informa o tipo de entrada
@@ -90,6 +91,7 @@ class ThreadedEchoHandler extends Thread {
 						DataOutputStream outData = new DataOutputStream(usuario);
 						outData.writeBoolean(tipoEntrada);
 						if (!tipoEntrada) {
+
 							if (str == null) done = true;
 							else {
 								outData.writeUTF(apelido + ":" + str);

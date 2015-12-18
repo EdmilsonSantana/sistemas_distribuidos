@@ -9,6 +9,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+import org.omg.CORBA.portable.InputStream;
+
 public class ClienteChat {
 
 	private ChatUI ui;
@@ -84,6 +86,7 @@ public class ClienteChat {
 			}
 			System.out.println("Arquivo " + arquivo.getName() + "enviado");
 			fileInputStream.close();
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
